@@ -5,12 +5,13 @@ const mongoose = require('mongoose');
 const { postTypeDefs } = require('./typeDef/postTypeDef');
 const { userTypeDefs } = require('./typeDef/userTypeDef');
 const postResolvers = require('./resolvers/post');
+const userResolvers = require('./resolvers/user');
 
 async function startServer() {
   const app = express();
   const server = new ApolloServer({
     typeDefs: [postTypeDefs, userTypeDefs],
-    resolvers: [postResolvers],
+    resolvers: [postResolvers, userResolvers],
   });
   await server.start();
   server.applyMiddleware({ app: app });
