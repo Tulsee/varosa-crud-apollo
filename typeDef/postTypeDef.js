@@ -5,6 +5,7 @@ const postTypeDefs = gql`
     id: ID
     title: String
     text: String
+    user: ID
   }
   type Query {
     hello: String
@@ -16,6 +17,7 @@ const postTypeDefs = gql`
   input PostInput {
     title: String
     text: String
+    user: ID
   }
   type Mutation {
     createPost(post: PostInput): Post
