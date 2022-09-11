@@ -7,10 +7,16 @@ const postTypeDefs = gql`
     text: String
     user: ID
   }
+  type Posts {
+    post: [Post]
+    count: Int
+    totalPages: Int
+    currentPage: Int
+  }
   type Query {
     hello: String
 
-    getAllPosts: [Post]
+    getAllPosts(limit: Int, page: Int): Posts
     getPostById(id: ID): Post
   }
 

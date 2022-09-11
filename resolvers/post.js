@@ -6,7 +6,18 @@ const postResolvers = {
     hello: () => 'world',
 
     getAllPosts: async (root, args, context) => {
-      return await Post.find();
+      const { page = 1, limit = 10 } = args;
+      console.log(page, limit);
+      const post = await Post.find()
+        .limit(limit * 1)
+        .skip((page - 1) * limit);
+      const count = await Post.countDocuments();
+      return {
+        post,
+        count,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+      };
     },
     getPostById: async (root, args, context) => {
       const { id } = args;
@@ -15,15 +26,11 @@ const postResolvers = {
   },
   Mutation: {
     createPost: requiresAuth.createResolver(async (root, args, context) => {
-      if (context.user === undefined) {
-        throw new Error('You must login to register');
-      } else {
-        const { title, text } = args.post;
-        const post = new Post({ title, text });
-        post.user = context.user.id;
-        await post.save();
-        return post;
-      }
+      const { title, text } = args.post;
+      const post = new Post({ title, text });
+      post.user = context.user.id;
+      await post.save();
+      return post;
     }),
     deletePost: requiresAuth.createResolver(
       async (root, args, context, info) => {
