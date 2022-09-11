@@ -1,12 +1,14 @@
 const express = require('express');
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer } = require('apollo-server-express');
 const mongoose = require('mongoose');
+
 const { tokenVerify } = require('./config');
 
 const { postTypeDefs } = require('./typeDef/postTypeDef');
 const { userTypeDefs } = require('./typeDef/userTypeDef');
 const postResolvers = require('./resolvers/post');
 const userResolvers = require('./resolvers/user');
+const { PORT, mongoURI } = require('./config/env');
 const app = express();
 
 async function startServer() {
@@ -23,12 +25,12 @@ async function startServer() {
   server.applyMiddleware({ app });
 
   await mongoose
-    .connect('mongodb://localhost:27017/varosa', {
+    .connect(mongoURI, {
       useNewUrlParser: true,
     })
     .then(() => console.log('connected to mongodb'))
     .catch((err) => console.log(err));
 
-  app.listen(2000, () => console.log(`server is running at port 2000`));
+  app.listen(PORT, () => console.log(`server is running at port ${PORT}`));
 }
 startServer();

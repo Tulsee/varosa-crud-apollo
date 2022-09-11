@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
-const secretOrKey = 'hjdsjdh';
+const secretOrKey = require('../config/env');
 
 const userResolvers = {
   Query: {

@@ -7,7 +7,6 @@ const postResolvers = {
 
     getAllPosts: async (root, args, context) => {
       const { page = 1, limit = 10 } = args;
-      console.log(page, limit);
       const post = await Post.find()
         .limit(limit * 1)
         .skip((page - 1) * limit);
